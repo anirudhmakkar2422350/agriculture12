@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('insights-area').classList.add('hidden');
 
             const fData = Object.fromEntries(new FormData(form).entries());
-            const res = await fetch('https://agriculture-tfu5.onrender.com/predict', {
+            const res = await fetch('https://agriculture12.onrender.com', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(fData)
