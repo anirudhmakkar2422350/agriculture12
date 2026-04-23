@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Insights | AgriTech Pro</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="enterprise-theme">
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="logo">🛰️ AgriTech<span class="gold">Pro</span></span>
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="home">Home</a></li>
+                <li><a href="analysis.html" data-i18n="analysis">AI Analysis</a></li>
+                <li><a href="market.html" class="active" data-i18n="market">Market Trends</a></li>
+                <li><a href="forecast.html" data-i18n="forecast">Weather Hub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-title">
+            <h1 data-i18n="market_insights">Daily Market Insights (Mandi Bhav)</h1>
+            <p data-i18n="mandi_subtitle">Real-time agricultural commodity prices across Indian Mandis (Estimated for 2026).</p>
+        </div>
+
+        <div class="market-grid">
+            <!-- Market cards will be populated by JS or fixed for now -->
+            <div class="market-card card">
+                <div class="m-header"><span>🌾 Rice (Basmati)</span> <span class="trend up">↑ 2.4%</span></div>
+                <div class="m-price">₹3,450 <small>/quintal</small></div>
+                <div class="m-advice buy">Good time to sell!</div>
+            </div>
+            <div class="market-card card">
+                <div class="m-header"><span>🌽 Maize</span> <span class="trend down">↓ 1.2%</span></div>
+                <div class="m-price">₹2,100 <small>/quintal</small></div>
+                <div class="m-advice wait">Hold for next week.</div>
+            </div>
+            <div class="market-card card">
+                <div class="m-header"><span>🫘 Chickpea</span> <span class="trend up">↑ 0.8%</span></div>
+                <div class="m-price">₹5,200 <small>/quintal</small></div>
+                <div class="m-advice buy">Demand is rising.</div>
+            </div>
+            <div class="market-card card">
+                <div class="m-header"><span>🍎 Apple</span> <span class="trend stable">↔ 0.0%</span></div>
+                <div class="m-price">₹120 <small>/kg</small></div>
+                <div class="m-advice wait">Harvest peak.</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="static/script.js"></script>
+</body>
+</html>

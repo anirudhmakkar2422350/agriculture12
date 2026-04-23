@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriTech Pro | 1Cr Enterprise Decision System</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+</head>
+<body class="enterprise-theme">
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <span class="logo">🛰️ AgriTech<span class="gold">Pro</span></span>
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="location-search" placeholder="Search any village, city or farm location..." autocomplete="off">
+                    <button id="detect-loc-btn" class="detect-btn-inline" title="Auto-Detect GPS"><i class="fas fa-location-crosshairs"></i></button>
+                    <button id="search-btn">Search</button>
+                </div>
+                <div class="accuracy-badge">AI Accuracy: 99.3%</div>
+                <div id="autocomplete-list" class="autocomplete-list hidden"></div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="index.html" data-i18n="home">Home</a></li>
+                <li><a href="analysis.html" class="active" data-i18n="analysis">AI Analysis</a></li>
+                <li><a href="market.html" data-i18n="market">Market Trends</a></li>
+                <li><a href="forecast.html" data-i18n="forecast">Weather Hub</a></li>
+            </ul>
+            <div class="lang-toggle">
+                <button id="lang-en" class="active">EN</button>
+                <button id="lang-hi">HI</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        <!-- Left Sidebar: Field Analysis Parameters -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-sliders-h"></i> <span data-i18n="field_params">Field Parameters</span></h3>
+                <button id="detect-loc-btn" class="btn-icon-only" title="Detect GPS"><i class="fas fa-location-crosshairs"></i></button>
+            </div>
+            
+            <form id="recommendation-form">
+                <div class="sidebar-inputs">
+                    <!-- N, P, K Group -->
+                    <div class="param-group">
+                        <h4 data-i18n="soil_nutrients">Soil Nutrients</h4>
+                        <div class="input-card">
+                            <label>Nitrogen (N) <span id="badge-N" class="badge hidden"></span></label>
+                            <input type="range" id="N" name="N" min="0" max="140" value="70">
+                            <span class="val" id="v-N">70</span>
+                        </div>
+                        <div class="input-card">
+                            <label>Phosphorus (P) <span id="badge-P" class="badge hidden"></span></label>
+                            <input type="range" id="P" name="P" min="5" max="145" value="75">
+                            <span class="val" id="v-P">75</span>
+                        </div>
+                        <div class="input-card">
+                            <label>Potassium (K) <span id="badge-K" class="badge hidden"></span></label>
+                            <input type="range" id="K" name="K" min="5" max="205" value="105">
+                            <span class="val" id="v-K">105</span>
+                        </div>
+                    </div>
+
+                    <!-- Climate Group -->
+                    <div class="param-group">
+                        <h4 data-i18n="climate_data">Climate Data</h4>
+                        <div class="input-card">
+                            <label>Temp (°C) <span id="badge-temperature" class="badge hidden"></span></label>
+                            <input type="range" id="temperature" name="temperature" min="8" max="44" step="0.1" value="26.0">
+                            <span class="val" id="v-temperature">26.0</span>
+                        </div>
+                        <div class="input-card">
+                            <label>Humidity (%) <span id="badge-humidity" class="badge hidden"></span></label>
+                            <input type="range" id="humidity" name="humidity" min="14" max="100" step="0.1" value="57.0">
+                            <span class="val" id="v-humidity">57.0</span>
+                        </div>
+                        <div class="input-card">
+                            <label>Soil pH <span id="badge-ph" class="badge hidden"></span></label>
+                            <input type="range" id="ph" name="ph" min="3.5" max="9.5" step="0.1" value="6.5">
+                            <span class="val" id="v-ph">6.5</span>
+                        </div>
+                        <div class="input-card">
+                            <label>Rainfall (mm) <span id="badge-rainfall" class="badge hidden"></span></label>
+                            <input type="range" id="rainfall" name="rainfall" min="20" max="300" step="0.1" value="160">
+                            <span class="val" id="v-rainfall">160.0</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="submit-btn" class="btn-main" data-i18n="run_analysis">Run AI Analysis</button>
+            </form>
+
+            <div id="zone-card" class="zone-info-card hidden">
+                <h4 data-i18n="detected_zone">Detected Soil Zone</h4>
+                <p id="zone-name">-</p>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Top Section: Weather & Map -->
+            <div class="dashboard-top">
+                <div class="weather-widget card">
+                    <div class="widget-header">
+                        <h3 data-i18n="7day_forecast">7-Day Local Forecast</h3>
+                        <span id="current-city">-</span>
+                    </div>
+                    <div id="weather-grid" class="weather-grid">
+                        <!-- Weather days injected here -->
+                    </div>
+                </div>
+                
+                <div class="map-widget card">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Ranked Results -->
+            <div id="results-area" class="dashboard-results">
+                <!-- Initial Placeholder -->
+                <div id="initial-message" class="empty-state">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2610/2610344.png" alt="Icon">
+                    <h2 data-i18n="ready_to_analyze">Ready to Analyze Your Farm</h2>
+                    <p data-i18n="use_search_or_sliders">Use the search bar above or adjust sliders to get multi-crop recommendations.</p>
+                </div>
+
+                <div id="loading-overlay" class="loader-overlay hidden">
+                    <div class="farm-loader"></div>
+                    <p data-i18n="running_ai">AgriTech AI is running millions of simulations...</p>
+                </div>
+
+                <!-- Categorized Result Panels -->
+                <div id="result-grid" class="result-grid hidden">
+                    <div class="category-panel">
+                        <div class="panel-header grain-header"><i class="fas fa-wheat-awn"></i> <span data-i18n="grains">Best Grains / Cereals</span></div>
+                        <div id="cat-grains" class="crop-list"></div>
+                    </div>
+                    <div class="category-panel">
+                        <div class="panel-header fruit-header"><i class="fas fa-apple-whole"></i> <span data-i18n="fruits">Best Fruits</span></div>
+                        <div id="cat-fruits" class="crop-list"></div>
+                    </div>
+                    <div class="category-panel">
+                        <div class="panel-header vegetable-header"><i class="fas fa-carrot"></i> <span data-i18n="vegetables">Best Vegetables / Pulses</span></div>
+                        <div id="cat-vegetables" class="crop-list"></div>
+                    </div>
+                </div>
+
+                <!-- Insights & Soil Tips -->
+                <div id="insights-area" class="insights-grid hidden">
+                    <div class="insight-card soil-health">
+                        <h4 data-i18n="soil_optimization">Soil Optimization Plan</h4>
+                        <ul id="soil-tips"></ul>
+                    </div>
+                    <div class="insight-card market-trends">
+                        <h4 data-i18n="market_insights">Market Insights (Mandi Bhav)</h4>
+                        <p data-i18n="estimated_2026">Estimated price trends for 2026-27 season.</p>
+                        <div id="market-list"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="static/script.js"></script>
+</body>
+</html>
