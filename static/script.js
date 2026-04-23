@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const weather = await weatherRes.json();
             renderWeatherGrid(weather);
 
-            const soilRes = await fetch('https://agriculture-tfu5.onrender.com/get_soil_data', {
+            const soilRes = await fetch('https://agriculture12.onrender.com', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ lat, lng })
