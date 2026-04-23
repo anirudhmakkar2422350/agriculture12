@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const weather = await weatherRes.json();
             renderWeatherGrid(weather);
 
-            const soilRes = await fetch('https://agriculture12.onrender.com', {
+            const soilRes = await fetch('https://agriculture12.onrender.com/get_soil_data', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ lat, lng })
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('insights-area').classList.add('hidden');
 
             const fData = Object.fromEntries(new FormData(form).entries());
-            const res = await fetch('https://agriculture12.onrender.com', {
+            const res = await fetch('https://agriculture12.onrender.com/predict', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(fData)
